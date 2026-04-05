@@ -15,6 +15,10 @@ function ExamEngineInner() {
   const [doubtful, setDoubtful] = useState<Record<number, boolean>>({});
   const [timeLeft, setTimeLeft] = useState(0);
   const [subtestInfo, setSubtestInfo] = useState<any>(null);
+  
+  // Anti-Cheat State
+  const [cheatWarning, setCheatWarning] = useState(false);
+  const [cheatCount, setCheatCount] = useState(0);
 
   // Load data based on subtest ID
   useEffect(() => {
@@ -64,17 +68,43 @@ function ExamEngineInner() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIdx, questions.length]);
+  }, [currentIdx, questions.length, cheatWarning]);
+
+  // Anti-Cheat Engine (Tab Switch & Fullscreen)
+  useEffect(() => {
+    const attemptFullscreen = async () => {
+      try {
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (e) {
+        console.warn("Fullscreen API block");
+      }
+    };
+    attemptFullscreen();
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setCheatWarning(true);
+        setCheatCount(prev => prev + 1);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   // Submit test and save to sessionStorage
   const submitTest = useCallback((isAuto = false) => {
     if (!isAuto && !confirm('Apakah Anda yakin ingin menyelesaikan subtest ini?')) return;
 
-    // Save score
+    // Save score and time taken
     const result = {
       subtestId: currentSubtestId,
       answers,
-      totalQuestions: questions.length
+      totalQuestions: questions.length,
+      timeTaken: subtestInfo ? (subtestInfo.minutes * 60) - timeLeft : 0,
+      cheatCount
     };
     
     // Save to history in session storage
@@ -97,7 +127,7 @@ function ExamEngineInner() {
       // Completed the stage end
       router.push('/result');
     }
-  }, [answers, currentSubtestId, questions.length, router]);
+  }, [answers, currentSubtestId, questions.length, router, subtestInfo, timeLeft, cheatCount]);
 
   // Timer logic
   useEffect(() => {
@@ -124,6 +154,32 @@ function ExamEngineInner() {
 
   return (
     <div className="min-h-screen bg-dark-900 flex flex-col h-screen overflow-hidden text-gray-200">
+      
+      {/* Cheat Warning Modal */}
+      {cheatWarning && (
+        <div className="fixed inset-0 bg-red-900/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-dark-800 border-2 border-red-500 rounded-2xl p-8 max-w-lg w-full text-center shadow-[0_0_50px_rgba(239,68,68,0.5)] animate-slide-in">
+            <svg className="w-20 h-20 text-red-500 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <h2 className="text-3xl font-bold text-white mb-4">PELANGGARAN TERDETEKSI</h2>
+            <p className="text-gray-300 text-lg mb-6">
+              Sistem Pengawas mendeteksi Anda meminimalkan layar, pindah ke aplikasi lain, atau membuka tab Google. Dilarang menyontek selama uji CBT!
+            </p>
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-8 font-mono">
+              Jumlah Rekam Pelanggaran: {cheatCount}
+            </div>
+            <button 
+              onClick={() => {
+                setCheatWarning(false);
+                if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
+              }}
+              className="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+            >
+              SAYA MENGERTI & KEMBALI KE UJIAN
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* HEADER */}
       <header className="bg-dark-800 border-b border-dark-700 h-16 flex items-center justify-between px-6 shrink-0 z-10 shadow-md">
         <div className="flex items-center gap-3">

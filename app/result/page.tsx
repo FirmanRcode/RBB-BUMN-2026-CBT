@@ -72,6 +72,13 @@ export default function ResultScreen() {
   // BUMN Passing Grade Logic (Contoh simulasi: tiap sub-tes minimal 65)
   const isLulus = results.length > 0 && results.every(r => r.score >= 65);
 
+  // Mock Leaderboard Peringkat Nasional
+  const percentile = averageScore >= 90 ? Math.max(1, 100 - averageScore + 1) : 
+                     averageScore >= 80 ? 100 - averageScore + 5 : 
+                     averageScore >= 65 ? 100 - averageScore + 15 : 
+                     averageScore >= 50 ? 50 : 80;
+  const rankText = averageScore >= 50 ? `Top ${percentile}%` : `Bottom ${100 - percentile}%`;
+
   const radarData = results.map(r => {
     let shortName = r.title.replace(/Sub-tes \d+: /i, '').split(' ')[0]; // Shorten to first word for chart
     if (shortName === 'Tes') shortName = 'AKHLAK';
@@ -109,9 +116,16 @@ export default function ResultScreen() {
           </div>
 
           <h2 className="text-xl text-primary-200 font-medium tracking-wide mb-2 mt-4">SKOR AKUMULASI KESELURUHAN</h2>
-          <div className="flex justify-center items-end gap-2 mb-4">
+          <div className="flex justify-center items-end gap-2 mb-2">
             <span className="text-7xl font-extrabold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{averageScore}</span>
             <span className="text-2xl text-primary-300 font-medium pb-2">/100</span>
+          </div>
+          
+          <div className="inline-block mt-2 px-6 py-2 bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-500/30 rounded-xl">
+            <p className="text-yellow-400 font-medium text-sm flex items-center justify-center gap-2">
+              <svg className="w-5 h-5 drop-shadow-md" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+              Estimasi Peringkat Nasional: <strong>{rankText}</strong>
+            </p>
           </div>
           
           <div className="flex justify-center gap-8 mt-6">
@@ -164,6 +178,14 @@ export default function ResultScreen() {
                 <span className="text-green-400 font-medium bg-green-500/10 px-2 py-0.5 rounded">✓ {res.correct} Benar</span>
                 <span className="text-red-400 font-medium bg-red-500/10 px-2 py-0.5 rounded">✗ {res.wrong} Salah</span>
                 <span className="text-gray-500 font-medium bg-gray-500/10 px-2 py-0.5 rounded">○ {res.skipped} Kosong</span>
+              </div>
+              <div className="flex gap-4 mt-2 text-xs">
+                {res.timeTaken && res.timeTaken > 0 && (
+                  <span className="text-primary-300">⏱️ Pacing: {Math.round(res.timeTaken / res.totalQuestions)} dtk/soal</span>
+                )}
+                {res.cheatCount && res.cheatCount > 0 && (
+                  <span className="text-red-400 font-bold bg-red-500/10 px-2 py-0.5 rounded animate-pulse">⚠️ {res.cheatCount} Pelanggaran Anti-Cheat</span>
+                )}
               </div>
             </div>
             
