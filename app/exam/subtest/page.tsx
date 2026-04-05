@@ -101,7 +101,18 @@ function ExamEngineInner() {
 
   // Submit test and save to sessionStorage
   const submitTest = useCallback((isAuto = false) => {
-    if (!isAuto && !confirm('Apakah Anda yakin ingin menyelesaikan subtest ini?')) return;
+    if (!isAuto) {
+      const answeredCount = Object.values(answers).filter(a => a !== '').length;
+      const unansweredCount = questions.length - answeredCount;
+      
+      if (unansweredCount > 0) {
+        if (!confirm(`PERINGATAN!\n\nMasih ada ${unansweredCount} soal yang belum Anda jawab.\nSkor kosong bernilai 0. Anda yakin ingin mengakhiri sub-tes ini lebih awal?`)) {
+          return;
+        }
+      } else {
+        if (!confirm('Anda telah mengisi semua jawaban. Apakah Anda yakin ingin menyelesaikan sub-tes ini?')) return;
+      }
+    }
 
     // Save score and time taken
     const result = {
