@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { examConfig, getQuestions } from '@/lib/examConfig';
 
-export default function ExamEngine() {
+function ExamEngineInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentSubtestId = searchParams.get('id');
@@ -235,5 +235,13 @@ export default function ExamEngine() {
       </div>
 
     </div>
+  );
+}
+
+export default function ExamEngine() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-dark-900 flex items-center justify-center text-white">Loading Simulator...</div>}>
+      <ExamEngineInner />
+    </Suspense>
   );
 }
