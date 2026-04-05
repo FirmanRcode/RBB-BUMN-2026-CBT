@@ -109,8 +109,9 @@ export default function Home() {
           ))}
         </div>
         
-        <div className="mt-12 text-center text-sm text-gray-500">
-          * Mode marathon: sub-tes akan berlanjut secara otomatis hingga akhir tahap.
+        <div className="mt-12 text-center text-sm text-gray-500 space-y-2">
+          <p>* Mode marathon: sub-tes akan berlanjut secara otomatis hingga akhir tahap.</p>
+          <p>&copy; 2026 All Rights Reserved - Restu Firmansyah</p>
         </div>
       </div>
     </div>
