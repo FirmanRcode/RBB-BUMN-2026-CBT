@@ -4,6 +4,8 @@
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FFirmanRcode%2FRBB-BUMN-2026-CBT)
+
 Aplikasi Web Simulasi Computer Based Test (CBT) Rekrutmen Bersama BUMN 2026 tingkat mahir yang dirancang secara profesional dengan akurasi antarmuka, *timer*, dan navigasi layaknya sistem resmi BUMN.
 
 Desain antarmuka responsif mengusung tema *Dark Mode* premium dengan pengalaman interaktif terintegrasi untuk mempersiapkan calon peserta menghadapi tekanan ujian sesungguhnya.
