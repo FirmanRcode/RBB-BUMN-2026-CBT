@@ -4,6 +4,9 @@ export const metadata = {
   title: 'Tryout RBB BUMN 2026',
   description: 'Simulasi Tryout Rekrutmen Bersama BUMN 2026',
   manifest: '/manifest.json',
+}
+
+export const viewport = {
   themeColor: '#3B82F6',
 }
 
