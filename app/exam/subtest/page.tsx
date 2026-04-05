@@ -138,10 +138,10 @@ function ExamEngineInner() {
     if (currentIndex === 6) nextIndex = 7; // within Tahap 2
     
     if (nextIndex !== -1) {
-      router.push(`/exam/subtest?id=${examConfig[nextIndex].id}`);
+      window.location.href = `/exam/subtest?id=${examConfig[nextIndex].id}`;
     } else {
       // Completed the stage end
-      router.push('/result');
+      window.location.href = '/result';
     }
   }, [answers, currentSubtestId, questions.length, router, subtestInfo, timeLeft, cheatCount]);
 
