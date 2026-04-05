@@ -1,13 +1,17 @@
 'use client';
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { examConfig, getQuestions } from '@/lib/examConfig';
 
 function ExamEngineInner() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentSubtestId = searchParams.get('id');
+  const [currentSubtestId, setCurrentSubtestId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setCurrentSubtestId(params.get('id'));
+  }, []);
 
   const [questions, setQuestions] = useState<any[]>([]);
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -22,7 +26,8 @@ function ExamEngineInner() {
 
   // Load data based on subtest ID
   useEffect(() => {
-    if (!currentSubtestId) {
+    if (currentSubtestId === null) return; // Still hydrating
+    if (currentSubtestId === '') {
       router.push('/');
       return;
     }

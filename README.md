@@ -10,21 +10,16 @@ Aplikasi Web Simulasi Computer Based Test (CBT) Rekrutmen Bersama BUMN 2026 ting
 
 Desain antarmuka responsif mengusung tema *Dark Mode* premium dengan pengalaman interaktif terintegrasi untuk mempersiapkan calon peserta menghadapi tekanan ujian sesungguhnya.
 
-## ✨ Fitur Unggulan
+## ✨ Fitur Unggulan (Enterprise CBT Experience)
 
-- **⏰ Persistent Stage Timer & Auto-Submit**: Timer *real-time* yang independen untuk setiap sub-tes. Jika waktu habis, sistem otomatis beralih ke tes berikutnya tanpa henti (*marathon mode*).
-- **📝 Sistem Navigasi Soal Asli BUMN**: Fitur penanda warna soal (Dikerjakan, Belum Dikerjakan, Ragu-ragu) dan navigasi panel yang persis seperti *engine* CBT BUMN.
-- **📚 350+ Bank Soal Terstandarisasi**: Dilengkapi dengan ratusan pangkalan data soal lokal untuk **8 Sub-Tes** mencakup:
-  - Verbal Logical Reasoning
-  - Number Sequence
-  - Word Classification
-  - Diagram Reasoning
-  - Tes AKHLAK (Situational Judgment Test)
-  - Wawasan Kebangsaan (TWK)
-  - Bahasa Inggris Asli Dunia Kerja
-  - Learning Agility
-- **🎯 Result & Analytics Mode**: Analisis hasil skor secara langsung setelah tes selesai. Dilengkapi tombol *Review* yang menampilkan **penjelasan logis dan "TRICK/Quick Hack"** pengerjaan dari instruktur simulasi.
-- **💾 Session Storage Persistence**: Status ujian disimpan dalam *sessionStorage* sehingga peserta tidak akan kehilangan data meskipun menekan tombol *Refresh* peramban.
+- **👀 Anti-Cheating Engine & Tracker**: Sensor pengawas digital terintegrasi layar. Sistem secara otomatis mewajibkan mode *Fullscreen* dan menggunakan pelacak `visibilitychange`—melacak dan memberikan peringatan keras jika peserta berpindah tab atau membuka *browser* lain.
+- **📈 Professional Radar Chart Analytics**: Menyematkan kurva Grafik Laba-laba *Real-time* (*Recharts*) pada dasbor hasil untuk memetakan spesialisasi skor dan kelemahan secara visual komprehensif.
+- **🏆 Peringkat Nasional (Percentile Leaderboard)**: Algoritma cerdas yang dapat mengestimasi *ranking* nasional Anda (Misal: *Top 15%*) tanpa memerlukan *backend/database* menggunakan perhitungan normal distribusi, serta evaluasi **Passing Grade** otomatis standar BUMN (minimal 65%).
+- **📱 Dukungan Progressive Web App (PWA) Offline**: Aplikasi dapat di-klik *"Install"* pada *browser* Android, iOS, maupun Windows untuk menjadi *Native App* yang dapat dimainkan **100% tanpa internet (Offline Mode)**.
+- **⌨️ Keyboard Shortcuts Navigation**: Dirancang khusus bagi pengguna Laptop, peserta dapat menekan tombol huruf `A, B, C, D, E` dan `Panah Kanan/Kiri` pada papan ketik (*keyboard*) layaknya sistem tes standar asli.
+- **🖨️ Native Print-to-PDF Export**: Cetak *Score Card* langsung menjadi *PDF Report* berdesain bersih (*print watermark*) tanpa tombol navigasi yang berantakan, sempurna untuk diunggah ke *LinkedIn*.
+- **📝 Sistem Navigasi Soal Asli BUMN**: Fitur penanda warna soal (Sudah, Belum, Ragu-ragu) dan navigasi panel identik dengan *engine* CBT BUMN. Ditambah **Question Shuffler** cerdas yang mengacak letak seluruh dari 350+ pangkalan data soal setiap kali disetel ulang!
+- **🎯 Review Mode & Speed Pacing**: Menghitung kecepatan jawab Anda (Contoh: "⏱️ 40 dtk/soal") dan hadir dengan sakelar filter cerdas: *Tampilkan Semua Soal*, *Hanya Soal Salah*, atau *Berdasarkan Ragu*.
 
 ## 🛠 Instalasi dan Konfigurasi Lokal
 
