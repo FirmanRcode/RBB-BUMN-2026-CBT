@@ -31,11 +31,15 @@ function ExamEngineInner() {
 
     setSubtestInfo(info);
     const qs = getQuestions(currentSubtestId);
-    setQuestions(qs);
-    // Initialize answers to empty based on actual loaded questions (usually 10 for sample, not config max)
+    
+    // Shuffle Questions for Replay Value
+    const shuffledQs = [...qs].sort(() => Math.random() - 0.5);
+    setQuestions(shuffledQs);
+    
+    // Initialize answers to empty 
     const initialAnswers: any = {};
     const initialDoubtful: any = {};
-    qs.forEach((_: any, i: number) => {
+    shuffledQs.forEach((_: any, i: number) => {
       initialAnswers[i] = '';
       initialDoubtful[i] = false;
     });
@@ -44,6 +48,23 @@ function ExamEngineInner() {
     setTimeLeft(info.minutes * 60);
     setCurrentIdx(0);
   }, [currentSubtestId, router]);
+
+  // Keyboard Navigation Hotkeys
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const key = e.key.toUpperCase();
+      if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
+        setAnswers(prev => ({ ...prev, [currentIdx]: key }));
+      } else if (key === 'ARROWLEFT' && currentIdx > 0) {
+        setCurrentIdx(p => p - 1);
+      } else if (key === 'ARROWRIGHT' && currentIdx < questions.length - 1) {
+        setCurrentIdx(p => p + 1);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIdx, questions.length]);
 
   // Submit test and save to sessionStorage
   const submitTest = useCallback((isAuto = false) => {
@@ -142,7 +163,11 @@ function ExamEngineInner() {
             {/* Options */}
             <div className="space-y-3">
               {['A', 'B', 'C', 'D', 'E'].map((opt) => (
-                <label key={opt} className={`group flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer ${answers[currentIdx] === opt ? 'bg-primary-900/30 border-primary-500 shadow-[0_0_15px_rgba(59,130,246,0.15)] ring-1 ring-primary-500' : 'bg-dark-800/50 border-dark-700 hover:border-dark-500 hover:bg-dark-800'}`}>
+                <div 
+                  key={opt} 
+                  onClick={() => setAnswers(prev => ({ ...prev, [currentIdx]: opt }))}
+                  className={`group flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer ${answers[currentIdx] === opt ? 'bg-primary-900/30 border-primary-500 shadow-[0_0_15px_rgba(59,130,246,0.15)] ring-1 ring-primary-500' : 'bg-dark-800/50 border-dark-700 hover:border-dark-500 hover:bg-dark-800'}`}
+                >
                   <div className="flex h-6 items-center">
                     <div className={`flex items-center justify-center w-6 h-6 rounded border font-semibold text-sm transition-colors ${answers[currentIdx] === opt ? 'bg-primary-600 border-primary-600 text-white' : 'border-dark-500 text-gray-400 group-hover:border-gray-400'}`}>
                       {opt}
@@ -151,7 +176,7 @@ function ExamEngineInner() {
                   <div className="text-gray-300 group-hover:text-gray-100 flex-1 leading-relaxed">
                     {currentQ.options[opt]}
                   </div>
-                </label>
+                </div>
               ))}
             </div>
             
