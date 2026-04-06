@@ -118,6 +118,7 @@ function ExamEngineInner() {
     const result = {
       subtestId: currentSubtestId,
       answers,
+      questions, // Save the shuffled question mapping!
       totalQuestions: questions.length,
       timeTaken: subtestInfo ? (subtestInfo.minutes * 60) - timeLeft : 0,
       cheatCount

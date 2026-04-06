@@ -23,7 +23,8 @@ export default function ResultScreen() {
     // Process results to include correct/wrong counts
     const processedResults = parsedData.map((res: any) => {
       const configInfo = examConfig.find(e => e.id === res.subtestId);
-      const qsData = getQuestions(res.subtestId);
+      // Fallback to getQuestions if res.questions doesn't exist (for old session backward compatibility)
+      const qsData = res.questions || getQuestions(res.subtestId);
       
       let correct = 0;
       let wrong = 0;
